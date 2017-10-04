@@ -17,20 +17,22 @@ Plug 'scrooloose/nerdtree'
 " Rust syntax
 Plug 'rust-lang/rust.vim'
 
-" Javascript + jsx plugins
+" Javascript + jsx + vue plugins
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'posva/vim-vue'
 " Elm syntax
 Plug 'lambdatoast/elm.vim'
 " GDScript syntax
 Plug 'quabug/vim-gdscript'
+" Dart syntax
+Plug 'dart-lang/dart-vim-plugin'
 
 " Better markdown editing
 Plug 'plasticboy/vim-markdown'
 
 " More colours!
 Plug 'flazz/vim-colorschemes'
-
 
 " Syntax for local in-dev plugins: 
 " Plug 'file://$HOME/dev/vim-plugins/myplugin'
@@ -52,7 +54,10 @@ set expandtab
 " let g:rust_recommended_style = 0
 " Make sure vim does not run Rustfmt on buffer save.
 let g:rustfmt_autosave = 0
-nnoremap =r :RustFmt<cr>
+augroup filetypedetect
+  " Associate .md with markdown
+  au BufRead,BufNewFile *.md setfiletype markdown
+augroup END
 
 " Set line numbers
 set number
@@ -80,9 +85,18 @@ noremap <leader>pi :CtrlPClearCache<CR>
 " Set colourscheme
 colorscheme zenburn
 
+function SetupDart()
+    nnoremap =r :DartFmt<cr>
+    set ts=2 " Tab stops
+    set sts=2 
+    set sw=2 " Shift width
+endfunction
+
 augroup filetypedetect
   " Associate .md with markdown
   au BufRead,BufNewFile *.md setfiletype markdown
+  au BufRead,BufNewFile *.rs nnoremap =r :RustFmt<cr>
+  au BufRead,BufNewFile *.dart call SetupDart()
 augroup END
 
 " Map quick fix list :cn and :cp (goto next / previous entry) to fn and fp in
