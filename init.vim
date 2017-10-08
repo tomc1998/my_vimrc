@@ -44,20 +44,11 @@ call plug#end()
 let mapleader=" "
 
 " Set indent behaviour
-set ts=4 " Tab stops
-set sts=4 
-set sw=4 " Shift width
+set ts=2 " Tab stops
+set sts=2 
+set sw=2 " Shift width
 set sr " Round shift values
 set expandtab
-
-" Make sure rust indents to 2 spaces, not 4.
-" let g:rust_recommended_style = 0
-" Make sure vim does not run Rustfmt on buffer save.
-let g:rustfmt_autosave = 0
-augroup filetypedetect
-  " Associate .md with markdown
-  au BufRead,BufNewFile *.md setfiletype markdown
-augroup END
 
 " Set line numbers
 set number
@@ -85,17 +76,21 @@ noremap <leader>pi :CtrlPClearCache<CR>
 " Set colourscheme
 colorscheme zenburn
 
-function SetupDart()
-    nnoremap =r :DartFmt<cr>
-    set ts=2 " Tab stops
-    set sts=2 
-    set sw=2 " Shift width
+function! SetupRust() 
+  set ts=4 " Tab stops
+  set sts=4 
+  set sw=4 " Shift width
+  nnoremap =r :RustFmt<cr>
+endfunction
+
+function! SetupDart()
+  nnoremap =r :DartFmt<cr>
 endfunction
 
 augroup filetypedetect
   " Associate .md with markdown
   au BufRead,BufNewFile *.md setfiletype markdown
-  au BufRead,BufNewFile *.rs nnoremap =r :RustFmt<cr>
+  au BufRead,BufNewFile *.rs call SetupRust()
   au BufRead,BufNewFile *.dart call SetupDart()
 augroup END
 
